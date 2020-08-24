@@ -1,7 +1,7 @@
-import { prop, ModelOptions } from '@typegoose/typegoose';
+import { prop, ModelOptions, DocumentType } from '@typegoose/typegoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { hashSync } from 'bcryptjs';
-
+export type AdminDocument = DocumentType<Admin>;
 // 添加创建时间、更新时间字段
 @ModelOptions({
   schemaOptions: {

@@ -16,7 +16,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   // 校验token
   async validate(id) {
-    console.log(id)
     return await this.adminModel.findById(id);
   }
 }
