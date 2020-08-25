@@ -19,6 +19,14 @@ class loginDto {
   password: string;
 }
 
+class regDto {
+  @ApiProperty({ title: '手机号码' })
+  phone: string;
+
+  @ApiProperty({ title: '密码' })
+  password: string;
+}
+
 @Controller('Auth')
 @ApiTags('用户Auth')
 export class AuthController {
@@ -27,8 +35,15 @@ export class AuthController {
     private jwtService: JwtService,
   ) {}
 
+  // 用户注册
+  @Post('RegUser')
+  @ApiOperation({ summary: '用户注册' })
+  async userReg(@Body() regDto: regDto) {
+    const res = await this.userModel.create(regDto);
+    if (res) return { code: 1, message: '注册成功' };
+  }
   // 用户登录
-  @Post('Login')
+  @Post('LoginUser')
   @ApiOperation({ summary: '用户登录' })
   @UseGuards(AuthGuard('local-web'))
   async userLogin(@Body() loginDto: loginDto, @Req() req) {

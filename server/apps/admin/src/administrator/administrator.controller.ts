@@ -28,7 +28,7 @@ import { AuthGuard } from '@nestjs/passport';
 })
 @Controller('Admin')
 @ApiTags('Admin管理')
-@UseGuards(AuthGuard('jwt'))
+@UseGuards(AuthGuard('jwt-admin'))
 @ApiBearerAuth()
 export class AdministratorController {
   constructor(

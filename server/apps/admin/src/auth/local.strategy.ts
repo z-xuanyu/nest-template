@@ -6,7 +6,7 @@ import { ReturnModelType } from '@typegoose/typegoose';
 import { BadRequestException } from '@nestjs/common';
 import { compareSync } from 'bcryptjs';
 
-export class LocalStrategy extends PassportStrategy(Strategy) {
+export class LocalStrategy extends PassportStrategy(Strategy,'local-admin') {
   constructor(
     @InjectModel(Admin) private adminModel: ReturnModelType<typeof Admin>,
   ) {

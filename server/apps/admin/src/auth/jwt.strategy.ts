@@ -4,7 +4,7 @@ import { InjectModel } from 'nestjs-typegoose';
 import { ReturnModelType } from '@typegoose/typegoose';
 import { Admin } from 'libs/db/models/admin.model';
 
-export class JwtStrategy extends PassportStrategy(Strategy) {
+export class JwtStrategy extends PassportStrategy(Strategy,'jwt-admin') {
   constructor(
     @InjectModel(Admin) private adminModel: ReturnModelType<typeof Admin>,
   ) {

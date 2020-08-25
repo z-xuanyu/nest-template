@@ -1,9 +1,10 @@
-import { Controller } from '@nestjs/common';
-import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { Controller, UseGuards } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { InjectModel } from 'nestjs-typegoose';
 import { User } from 'libs/db/models/user.model';
 import { ReturnModelType } from '@typegoose/typegoose';
 import { Crud } from 'nestjs-mongoose-crud';
+import { AuthGuard } from '@nestjs/passport';
 
 @Crud({
   model: User,
@@ -27,6 +28,8 @@ import { Crud } from 'nestjs-mongoose-crud';
 })
 @Controller('user')
 @ApiTags('用户')
+@UseGuards(AuthGuard('jwt-web'))
+@ApiBearerAuth()
 export class UserController {
   constructor(
     @InjectModel(User) private userModel: ReturnModelType<typeof User>,
