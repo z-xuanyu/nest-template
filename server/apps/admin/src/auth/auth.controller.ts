@@ -21,8 +21,12 @@ export class AuthController {
   @Post('RegAdmin')
   @ApiOperation({ summary: 'Admin注册' })
   async regAdmin(@Body() regDto: regDto) {
-    const res = await this.adminModel.create(regDto);
-    if (res) return { code: 1, message: '注册成功' };
+    try {
+      await this.adminModel.create(regDto);
+      return { code: 1, message: '注册成功' };
+    } catch (error) {
+      if (error.code == 11000) return { code: 0, message: '邮箱已存在！' };
+    }
   }
 
   // 管理员登录

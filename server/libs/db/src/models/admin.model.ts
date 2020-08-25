@@ -14,7 +14,7 @@ export class Admin {
   name: string;
 
   @ApiProperty({ title: '邮箱' })
-  @prop({ required: true })
+  @prop({ required: true, unique: true })
   email: string;
 
   @ApiProperty({ title: '密码' })

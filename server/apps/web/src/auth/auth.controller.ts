@@ -39,8 +39,12 @@ export class AuthController {
   @Post('RegUser')
   @ApiOperation({ summary: '用户注册' })
   async userReg(@Body() regDto: regDto) {
-    const res = await this.userModel.create(regDto);
-    if (res) return { code: 1, message: '注册成功' };
+    try {
+      await this.userModel.create(regDto);
+      return { code: 1, message: '注册成功' };
+    } catch (error) {
+      if (error.code == 11000) return { code: 0, message: '用户已存在！' };
+    }
   }
   // 用户登录
   @Post('LoginUser')
