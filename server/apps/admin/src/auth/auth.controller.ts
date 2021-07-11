@@ -22,7 +22,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Admin注册' })
   async regAdmin(@Body() regDto: regDto) {
     try {
-      await this.adminModel.create(regDto);
+      await this.adminModel.create(regDto as Admin);
       return { code: 1, message: '注册成功' };
     } catch (error) {
       if (error.code == 11000) return { code: 0, message: '邮箱已存在！' };
@@ -37,7 +37,7 @@ export class AuthController {
     const token = this.jwtService.sign(String(req.user._id));
     return {
       code: 1,
-      data: { token },
+      result: { token },
       message: '登录成功',
     };
   }
@@ -47,6 +47,10 @@ export class AuthController {
   @UseGuards(AuthGuard('jwt-admin'))
   @ApiBearerAuth()
   async getAdminInfo(@CurrentUser() user: AdminDocument) {
-    return user;
+    return {
+      code: 1,
+      result: user,
+      message: '请求成功'
+    };
   }
 }

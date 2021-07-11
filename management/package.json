@@ -1,0 +1,88 @@
+{
+  "name": "vue3-antd-admin",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "build typecheck": "vuedx-typecheck . && vite build",
+    "deploy": "gh-pages -d dist",
+    "lint:eslint": "eslint \"{src,mock}/**/*.{vue,ts,tsx}\" --fix",
+    "lint:prettier": "prettier --write --loglevel warn \"src/**/*.{js,json,tsx,css,less,scss,vue,html,md}\"",
+    "lint:stylelint": "stylelint --fix \"**/*.{vue,less,postcss,css,scss}\" --cache --cache-location node_modules/.cache/stylelint/",
+    "lint:lint-staged": "lint-staged -c ./.husky/lintstagedrc.js",
+    "lint:pretty": "pretty-quick --staged",
+    "test prod gzip": "http-server dist --cors --gzip -c-1",
+    "test prod cors": "http-server dist --cors --gzip -P http://us-la-cn2.sakurafrp.com:59660"
+  },
+  "dependencies": {
+    "@vueuse/core": "^5.0.3",
+    "ant-design-vue": "2.2.0-beta.3",
+    "axios": "^0.21.1",
+    "blueimp-md5": "^2.18.0",
+    "dayjs": "^1.10.5",
+    "lodash": "^4.17.21",
+    "mitt": "^2.1.0",
+    "nprogress": "^1.0.0-1",
+    "qs": "^6.10.1",
+    "vue": "3.1.1",
+    "vue-router": "^4.0.8",
+    "vuex": "^4.0.1"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^12.1.4",
+    "@commitlint/config-conventional": "^12.1.4",
+    "@types/lodash": "^4.14.170",
+    "@types/node": "^15.12.2",
+    "@typescript-eslint/eslint-plugin": "^4.26.1",
+    "@typescript-eslint/parser": "^4.26.1",
+    "@vitejs/plugin-vue": "^1.2.3",
+    "@vitejs/plugin-vue-jsx": "^1.1.5",
+    "@vue/compiler-sfc": "3.1.1",
+    "@vue/eslint-config-typescript": "^7.0.0",
+    "commitizen": "^4.2.4",
+    "core-js": "^3.14.0",
+    "eslint": "^7.28.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-vue": "^7.11.1",
+    "gh-pages": "^3.2.0",
+    "husky": "^6.0.0",
+    "less": "^4.1.1",
+    "less-loader": "^9.0.0",
+    "lint-staged": "^11.0.0",
+    "prettier": "^2.3.1",
+    "pretty-quick": "^3.1.0",
+    "sass": "^1.34.1",
+    "sass-loader": "^12.0.0",
+    "stylelint": "^13.13.1",
+    "stylelint-config-prettier": "^8.0.2",
+    "stylelint-config-standard": "^22.0.0",
+    "stylelint-order": "^4.1.0",
+    "stylelint-scss": "^3.19.0",
+    "typescript": "^4.3.2",
+    "vite": "^2.3.7",
+    "vite-plugin-style-import": "^0.10.1",
+    "vue-eslint-parser": "^7.6.0"
+  },
+  "lint-staged": {
+    "*.{vue,js,ts,tsx}": "eslint --fix"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-customizable"
+    }
+  },
+  "keywords": [
+    "vue",
+    "ant-design-vue",
+    "vue3",
+    "ts",
+    "tsx",
+    "admin",
+    "typescript"
+  ],
+  "homepage": "git@buqiyuan.github.io/vue3-antd",
+  "__npminstall_done": false
+}

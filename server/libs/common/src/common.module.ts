@@ -9,7 +9,7 @@ import { DbModule } from 'libs/db';
     JwtModule.registerAsync({
       useFactory() {
         return {
-          secret: 'xuanyu',
+          secret: process.env.JWT_SECRET,
         };
       },
     }),

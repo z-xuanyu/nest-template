@@ -3,7 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { InjectModel } from 'nestjs-typegoose';
 import { Admin } from 'libs/db/models/admin.model';
 import { ReturnModelType } from '@typegoose/typegoose';
-import { BadRequestException } from '@nestjs/common';
+import { HttpException, HttpStatus } from '@nestjs/common';
 import { compareSync } from 'bcryptjs';
 
 export class LocalStrategy extends PassportStrategy(Strategy,'local-admin') {
@@ -21,10 +21,13 @@ export class LocalStrategy extends PassportStrategy(Strategy,'local-admin') {
     const admin = await this.adminModel.findOne({ email }).select('+password');
 
     if (!admin) {
-      throw new BadRequestException('用户名不正确');
+      throw new HttpException('用户不存在,请联系管理员', HttpStatus.OK);
     }
     if (!compareSync(password, admin.password)) {
-      throw new BadRequestException('密码不正确');
+      throw new HttpException('密码不正确', HttpStatus.OK);
+    }
+    if (!admin.status) {
+      throw new HttpException('您的账号已被禁用，请联系管理员', HttpStatus.OK);
     }
     return admin;
   }
