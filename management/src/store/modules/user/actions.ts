@@ -1,3 +1,12 @@
+/*
+ * @Author: xuanyu
+ * @LastEditors: xuanyu
+ * @email: 969718197@qq.com
+ * @github: https://github.com/z-xuanyu
+ * @Date: 2021-07-16 10:14:38
+ * @LastEditTime: 2021-07-16 18:07:17
+ * @Description: Modify here please
+ */
 import { ActionContext } from 'vuex'
 import { IUserState } from './state'
 import { getUserInfo, login } from '@/api/system/user'
@@ -11,16 +20,15 @@ export const actions = {
   async login({ commit }: ActionContext<IUserState, IStore>, userInfo) {
     try {
       const response = await login(userInfo)
-      const { result, code, message } = response
+      const { result, code } = response
       if (code == 1) {
-        console.log(result.token)
         const ex = 7 * 24 * 60 * 60 * 1000
         storage.set(ACCESS_TOKEN, result.token, ex)
-        storage.set(CURRENT_USER, result, ex)
+        storage.set(CURRENT_USER, result.userInfo, ex)
         storage.set(IS_LOCKSCREEN, false)
         commit('setToken', result.token)
         // todo
-        commit('setUserInfo', result)
+        commit('setUserInfo', result.userInfo)
         store.commit('lockscreen/setLock', false)
       }
       return Promise.resolve(response)

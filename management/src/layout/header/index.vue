@@ -35,7 +35,7 @@
       <!--      切换全屏-->
       <component :is="fullscreenIcon" @click="toggleFullScreen" />
       <Dropdown>
-        <a-avatar>{{ username }}</a-avatar>
+        <a-avatar :src="userAvatar" />
         <template #overlay>
           <a-menu>
             <a-menu-item>
@@ -75,6 +75,7 @@ export default defineComponent({
 
     const state = reactive({
       username: store.getters['user/userInfo']?.username,
+      userAvatar: store.getters['user/userInfo']?.avatar,
       fullscreenIcon: 'FullscreenOutlined'
     })
 
@@ -137,7 +138,7 @@ export default defineComponent({
         icon: 'GithubOutlined',
         tips: 'github',
         eventObject: {
-          click: () => window.open('https://github.com/buqiyuan/vue3-antd')
+          click: () => window.open('https://github.com/z-xuanyu')
         }
       },
       {

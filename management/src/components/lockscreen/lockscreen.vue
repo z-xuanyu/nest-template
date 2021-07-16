@@ -32,7 +32,7 @@
             <user-outlined />
           </template>
         </a-avatar>
-        <div class="username">{{ loginForm.username }}</div>
+        <div class="username">{{ loginForm.email }}</div>
         <a-input-search
           v-model:value="loginForm.password"
           type="password"
@@ -65,7 +65,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, reactive, toRefs, computed } from 'vue'
+import { defineComponent, reactive, toRefs, computed } from 'vue'
 import { Avatar, message, Modal } from 'ant-design-vue'
 import {
   LockOutlined,
@@ -116,7 +116,7 @@ export default defineComponent({
       isShowLogin: false,
       loginLoading: false, // 正在登录
       loginForm: {
-        username: store.getters['user/userInfo']?.username,
+        email: store.getters['user/userInfo']?.email,
         password: ''
       }
     })
@@ -184,14 +184,14 @@ export default defineComponent({
 .lockscreen {
   position: fixed;
   top: 0;
-  left: 0;
-  bottom: 0;
   right: 0;
-  display: flex;
-  background: #000;
-  color: white;
-  overflow: hidden;
+  bottom: 0;
+  left: 0;
   z-index: 9999;
+  display: flex;
+  overflow: hidden;
+  color: white;
+  background: #000;
 
   &.unLockLogin {
     background-color: rgba(25, 28, 34, 0.88);
@@ -202,8 +202,8 @@ export default defineComponent({
     position: absolute;
     top: 45%;
     left: 50%;
-    transform: translate(-50%, -50%);
     display: flex;
+    transform: translate(-50%, -50%);
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -221,8 +221,8 @@ export default defineComponent({
     position: absolute;
     top: 12vh;
     left: 50%;
-    transform: translateX(-50%);
     font-size: 34px;
+    transform: translateX(-50%);
 
     .tips {
       color: white;
@@ -268,8 +268,8 @@ export default defineComponent({
 
   .computer-status {
     position: absolute;
-    bottom: 60px;
     right: 60px;
+    bottom: 60px;
     font-size: 24px;
 
     > * {
@@ -280,15 +280,15 @@ export default defineComponent({
       position: relative;
 
       &.offline::before {
-        content: '';
         position: absolute;
-        left: 50%;
         top: 50%;
+        left: 50%;
+        z-index: 10;
         width: 2px;
         height: 28px;
-        transform: translate(-50%, -50%) rotate(45deg);
         background-color: red;
-        z-index: 10;
+        content: '';
+        transform: translate(-50%, -50%) rotate(45deg);
       }
     }
   }
