@@ -1,10 +1,19 @@
+/*
+ * @Author: xuanyu
+ * @LastEditors: xuanyu
+ * @email: 969718197@qq.com
+ * @github: https://github.com/z-xuanyu
+ * @Date: 2021-07-16 10:14:38
+ * @LastEditTime: 2021-07-16 11:00:22
+ * @Description: Modify here please
+ */
 import 'dotenv/config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as rateLimit from 'express-rate-limit';
 import * as helmet from 'helmet';
-const PORT = process.env.PORT || 8888;
+const PORT = process.env.ADMIN_PORT || 8888;
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 

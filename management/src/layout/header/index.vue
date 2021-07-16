@@ -69,6 +69,7 @@ export default defineComponent({
       type: Boolean
     }
   },
+  emits: ['update:collapsed'],
   setup() {
     const store = useStore()
 
@@ -78,7 +79,7 @@ export default defineComponent({
     })
 
     const router = useRouter()
-    const route = useRoute()
+    const route = useRoute() as any
     console.log(route.matched)
     console.log(router.getRoutes(), 'currentRoute')
 
@@ -90,7 +91,7 @@ export default defineComponent({
         onOk: () => {
           console.log(router, '退出登录')
           // logout({})
-          store.dispatch('user/logout').then((res) => {
+          store.dispatch('user/logout').then(() => {
             message.success('成功退出登录')
             // 移除标签页
             localStorage.removeItem(TABS_ROUTES)
@@ -165,15 +166,15 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .layout-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   position: sticky;
   top: 0;
   z-index: 10;
-  background-color: #fff;
-  padding: 0;
+  display: flex;
   height: $header-height;
+  padding: 0;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
 
   .left-options {
     display: flex;

@@ -67,7 +67,7 @@ export class InitDbService implements OnModuleInit {
         },
       ];
 
-      for (let item of subMenuArr) {
+      for (const item of subMenuArr) {
         await this.menuModel.create(item);
       }
 

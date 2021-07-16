@@ -3,7 +3,7 @@
     <div class="login-logo">
       <!--      <svg-icon name="logo" />-->
       <img src="~@/assets/images/logo.png" alt="" />
-      <h1>后台登录系统</h1>
+      <h1>后台管理系统</h1>
     </div>
     <a-form layout="horizontal" :model="formInline" @submit="handleSubmit">
       <a-form-item>
@@ -64,7 +64,6 @@ export default defineComponent({
         return message.warning('用户名或密码不能为空！')
       message.loading('登录中...', 0)
       state.loading = true
-      console.log(state.formInline)
       const params = {
         email,
         password
@@ -96,9 +95,9 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .login-box {
+  display: flex;
   width: 100vw;
   height: 100vh;
-  display: flex;
   padding-top: 240px;
   flex-direction: column;
   align-items: center;
@@ -117,9 +116,10 @@ export default defineComponent({
     img {
       height: 48px;
     }
+
     h1 {
-      margin-left: 10px;
       margin-bottom: 0;
+      margin-left: 10px;
     }
   }
 
@@ -129,6 +129,7 @@ export default defineComponent({
     .ant-col {
       width: 100%;
     }
+
     .ant-form-item-label {
       padding-right: 6px;
     }
