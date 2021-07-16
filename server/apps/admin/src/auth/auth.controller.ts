@@ -37,7 +37,14 @@ export class AuthController {
     const token = this.jwtService.sign(String(req.user._id));
     return {
       code: 1,
-      result: { token },
+      result: { 
+       token,
+       userInfo:{
+         avatar:req.user.avatar,
+         email:req.user.email,
+         name:req.user.name
+       }
+       },
       message: '登录成功',
     };
   }
