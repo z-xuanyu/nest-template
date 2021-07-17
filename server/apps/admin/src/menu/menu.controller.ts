@@ -3,8 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  HttpException,
-  HttpStatus,
   Param,
   Patch,
   Post,
@@ -17,14 +15,11 @@ import {
   ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
-import { ReturnModelType } from '@typegoose/typegoose';
 import { CurrentUser } from 'apps/web/src/auth/current-user.decorator';
-import { Admin, AdminDocument } from 'libs/db/models/admin.model';
-import { Menu } from 'libs/db/models/menu.model';
-import { Role } from 'libs/db/models/role.model';
-import { InjectModel } from 'nestjs-typegoose';
+import { AdminDocument } from 'libs/db/models/admin.model';
 import { AddMenuDto } from './Dto/addMenuDto';
 import { UpdateMenuDto } from './Dto/updateMenuDto';
+import { MenuService } from './menu.service';
 
 @Controller('menu')
 @ApiTags('菜单管理')
@@ -32,39 +27,20 @@ import { UpdateMenuDto } from './Dto/updateMenuDto';
 @ApiBearerAuth()
 export class MenuController {
   constructor(
-    @InjectModel(Menu) private menuModel: ReturnModelType<typeof Menu>,
-    @InjectModel(Admin) private adminModel: ReturnModelType<typeof Admin>,
-    @InjectModel(Role) private roleModel: ReturnModelType<typeof Role>,
+    private menuService: MenuService,
   ) {}
 
+  /**
+   * 获取登录人权限菜单列表
+   */
   @Get('roleMenus')
-  @ApiOperation({ summary: '根据角色获取菜单列表' })
+  @ApiOperation({ summary: '获取登录人权限菜单列表' })
   async menus(@CurrentUser() user: AdminDocument) {
-    // 通过admin查询该管理员的角色
-    const roles = await this.adminModel
-      .findById({ _id: user._id })
-      .populate('roleIds');
-    // 获取角色的菜单
-    let menus: any = [];
-    for (let key in roles.roleIds) {
-      let rolesItem: any = roles.roleIds[key];
-      const menuListRes = await this.roleModel
-        .findById({ _id: rolesItem._id })
-        .populate('menuIds');
-
-      menus = menus.concat(menuListRes.menuIds);
-    }
-
-    // 菜单去重
-    let MenuObj = {};
-    const allMenus = menus.reduce((cur, next) => {
-      MenuObj[next._id] ? '' : (MenuObj[next._id] = true && cur.push(next));
-      return cur;
-    }, []);
+    const result = await this.menuService.getMenuListByRoleAndAdmin(user._id);
     return {
       code: 1,
       message: '请求成功',
-      result: allMenus,
+      result,
     };
   }
 
@@ -74,7 +50,7 @@ export class MenuController {
   @Get('list')
   @ApiOperation({ summary: '获取菜单列表' })
   async getMenuList() {
-    const result = await this.menuModel.find();
+    const result = await this.menuService.getMenuList();
     return {
       code: 1,
       message: '请求成功',
@@ -91,10 +67,7 @@ export class MenuController {
     if (!addMenuForm.parentId) {
       addMenuForm.parentId = null;
     }
-    const result = await this.menuModel.create(addMenuForm as any);
-    if (!result) {
-      throw new HttpException('系统异常，请联系管理员', HttpStatus.OK);
-    }
+    const result = await this.menuService.addMenu(addMenuForm);
     return {
       code: 1,
       message: '请求成功',
@@ -102,10 +75,8 @@ export class MenuController {
     };
   }
 
-
-
-  /** 
-   * 编辑更新菜单 
+  /**
+   * 编辑更新菜单
    */
   @Patch(':id')
   @ApiOperation({ summary: '编辑更新菜单' })
@@ -117,18 +88,13 @@ export class MenuController {
     @Param('id') id: string,
     @Body() updateMenuForm: UpdateMenuDto,
   ) {
-    const result = await this.menuModel.findByIdAndUpdate(id, updateMenuForm as any);
-    if (!result) {
-      throw new HttpException('系统异常，请联系管理员', HttpStatus.OK);
-    }
+    const result = await this.menuService.updateMenu(updateMenuForm, id);
     return {
       code: 1,
       message: '请求成功',
       result,
     };
   }
-
-
 
   /**
    * 删除菜单
@@ -140,10 +106,7 @@ export class MenuController {
     description: '菜单id',
   })
   async delMenu(@Param('id') id: string) {
-    const result = await this.menuModel.findByIdAndDelete({ _id: id });
-    if (!result) {
-      throw new HttpException('系统异常，请联系管理员', HttpStatus.OK);
-    }
+    const result = await this.menuService.delMenu(id);
     return {
       code: 1,
       message: '请求成功',
