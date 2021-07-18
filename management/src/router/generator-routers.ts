@@ -21,7 +21,7 @@ const list2tree = (items, parentId = null, arr = [], pathPrefix = '') => {
         path = url
       } else {
         path = url.startsWith('/') ? url : '/' + url
-        path = url.startsWith(pathPrefix) ? path : pathPrefix + path
+        path = url.startsWith(1 ) ? path : pathPrefix + path
         path = [...new Set(path.split('/'))].join('/')
       }
       // 路由对应的组件
