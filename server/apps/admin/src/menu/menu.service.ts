@@ -1,3 +1,12 @@
+/*
+ * @Author: xuanyu
+ * @LastEditors: xuanyu
+ * @email: 969718197@qq.com
+ * @github: https://github.com/z-xuanyu
+ * @Date: 2021-07-19 09:39:40
+ * @LastEditTime: 2021-07-19 11:46:20
+ * @Description: Modify here please
+ */
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ReturnModelType } from '@typegoose/typegoose';
 import { Admin } from 'libs/db/models/admin.model';
@@ -25,8 +34,8 @@ export class MenuService {
       .populate('roleIds');
     // 获取角色的菜单
     let menus: any = [];
-    for (let key in roles.roleIds) {
-      let rolesItem: any = roles.roleIds[key];
+    for (const key in roles.roleIds) {
+      const rolesItem: any = roles.roleIds[key];
       const menuListRes = await this.roleModel
         .findById({
           _id: rolesItem._id,
@@ -37,7 +46,7 @@ export class MenuService {
     }
 
     // 菜单去重
-    let MenuObj = {};
+    const MenuObj = {};
     const allMenus = menus.reduce((cur, next) => {
       MenuObj[next._id] ? '' : (MenuObj[next._id] = true && cur.push(next));
       return cur;

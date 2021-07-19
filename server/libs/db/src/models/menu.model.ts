@@ -1,3 +1,12 @@
+/*
+ * @Author: xuanyu
+ * @LastEditors: xuanyu
+ * @email: 969718197@qq.com
+ * @github: https://github.com/z-xuanyu
+ * @Date: 2021-07-16 10:14:38
+ * @LastEditTime: 2021-07-19 11:42:54
+ * @Description: Modify here please
+ */
 import { ApiProperty } from '@nestjs/swagger';
 import { ModelOptions, prop, Ref } from '@typegoose/typegoose';
 
@@ -31,4 +40,8 @@ export class Menu {
   @ApiProperty({ title: '菜单url' })
   @prop()
   url: string;
+
+  @ApiProperty({title:"组件名称"})
+  @prop()
+  componentName:string
 }
