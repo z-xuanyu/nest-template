@@ -1,3 +1,12 @@
+/*
+ * @Author: xuanyu
+ * @LastEditors: xuanyu
+ * @email: 969718197@qq.com
+ * @github: https://github.com/z-xuanyu
+ * @Date: 2021-07-16 10:14:38
+ * @LastEditTime: 2021-07-23 17:50:47
+ * @Description: Modify here please
+ */
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ReturnModelType } from '@typegoose/typegoose';
 import { Admin } from 'libs/db/models/admin.model';
@@ -48,7 +57,7 @@ export class AdministratorService {
     const isHasEmail = await this.adminModel.findOne({
       email: editAdminForm.email,
     });
-    if (isHasEmail) {
+    if (isHasEmail._id != id) {
       throw new HttpException('邮箱已经存在！', HttpStatus.OK);
     }
 
