@@ -32,7 +32,8 @@ export class InitDbService implements OnModuleInit {
       url: 'system',
       sort: 1,
       keepAlive: 0,
-      icon: 'icon-fuzhi',
+      componentName:'System',
+      icon: 'ant-design:setting-outlined',
     };
     const menuRes = await this.menuModel.find();
     // 如果没有菜单数据，才执行初始化数据库
@@ -46,24 +47,27 @@ export class InitDbService implements OnModuleInit {
           parentId: menu1._id,
           url: 'system/account',
           sort: 1,
+          componentName: 'Account',
           keepAlive: 0,
-          icon: 'icon-yun',
+          icon: 'ant-design:user-outlined',
         },
         {
           name: '角色管理',
           parentId: menu1._id,
           url: 'system/role',
+          componentName: 'Role',
           sort: 1,
           keepAlive: 0,
-          icon: 'icon-zhuxingtu',
+          icon: 'ant-design:gold-outlined',
         },
         {
           name: '菜单管理',
           parentId: menu1._id,
           url: 'system/menu',
+          componentName: 'Menu',
           sort: 1,
           keepAlive: 0,
-          icon: 'icon-anjianguanli',
+          icon: 'ant-design:menu-outlined',
         },
       ];
 

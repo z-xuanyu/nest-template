@@ -26,7 +26,7 @@ import { InitDbModule } from './init-db/init-db.module';
     AuthModule,
     RoleModule,
     MenuModule,
-    // InitDbModule  // 打开注释，重新启动项目 yarn start -w admin 初始化数据库
+    InitDbModule  // 打开注释，重新启动项目 yarn start -w admin 初始化数据库
   ],
   controllers: [AppController],
   providers: [AppService],
