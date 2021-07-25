@@ -3053,15 +3053,16 @@ bin-version@^3.0.0:
     execa "^1.0.0"
     find-versions "^3.0.0"
 
-bin-wrapper@^4.0.0, bin-wrapper@^4.0.1:
-  version "4.1.0"
-  resolved "https://registry.npm.taobao.org/bin-wrapper/download/bin-wrapper-4.1.0.tgz#99348f2cf85031e3ef7efce7e5300aeaae960605"
-  integrity sha1-mTSPLPhQMePvfvzn5TAK6q6WBgU=
+bin-wrapper@^4.0.0, bin-wrapper@^4.0.1, "bin-wrapper@npm:bin-wrapper-china":
+  version "0.1.0"
+  resolved "https://r.cnpmjs.org/bin-wrapper-china/download/bin-wrapper-china-0.1.0.tgz#c2ec95b4d0eaef6ed5ad10954f9227d8e5ef3725"
+  integrity sha1-wuyVtNDq727VrRCVT5In2OXvNyU=
   dependencies:
     bin-check "^4.1.0"
     bin-version-check "^4.0.0"
+    binary-mirror-config "^1"
     download "^7.1.0"
-    import-lazy "^3.1.0"
+    import-lazy "^4.0.0"
     os-filter-obj "^2.0.0"
     pify "^4.0.1"
 
@@ -3069,6 +3070,11 @@ binary-extensions@^2.0.0:
   version "2.2.0"
   resolved "https://registry.npmjs.org/binary-extensions/-/binary-extensions-2.2.0.tgz#75f502eeaf9ffde42fc98829645be4ea76bd9e2d"
   integrity sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==
+
+binary-mirror-config@^1:
+  version "1.30.0"
+  resolved "https://r.cnpmjs.org/binary-mirror-config/download/binary-mirror-config-1.30.0.tgz#17c6f6263dd2d1e1ebcec21351c2b712bdfc4593"
+  integrity sha1-F8b2Jj3S0eHrzsITUcK3Er38RZM=
 
 bl@^1.0.0:
   version "1.2.3"
@@ -4268,6 +4274,11 @@ dateformat@^3.0.0:
   version "3.0.3"
   resolved "https://registry.npmjs.org/dateformat/-/dateformat-3.0.3.tgz#a6e37499a4d9a9cf85ef5872044d62901c9889ae"
   integrity sha512-jyCETtSl3VMZMWeRo7iY1FL19ges1t55hMo5yaam4Jrsm5EPL89UQkoQRyiI+Yf4k8r2ZpdngkV8hr1lIdjb3Q==
+
+dayjs@^1.10.6:
+  version "1.10.6"
+  resolved "https://r.cnpmjs.org/dayjs/download/dayjs-1.10.6.tgz#288b2aa82f2d8418a6c9d4df5898c0737ad02a63"
+  integrity sha1-KIsqqC8thBimydTfWJjAc3rQKmM=
 
 debug@2.6.9, debug@^2.2.0, debug@^2.3.3:
   version "2.6.9"
@@ -6450,11 +6461,6 @@ import-lazy@^2.1.0:
   version "2.1.0"
   resolved "https://registry.npmjs.org/import-lazy/-/import-lazy-2.1.0.tgz#05698e3d45c88e8d7e9d92cb0584e77f096f3e43"
   integrity sha1-BWmOPUXIjo1+nZLLBYTnfwlvPkM=
-
-import-lazy@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.nlark.com/import-lazy/download/import-lazy-3.1.0.tgz#891279202c8a2280fdbd6674dbd8da1a1dfc67cc"
-  integrity sha1-iRJ5ICyKIoD9vWZ029jaGh38Z8w=
 
 import-lazy@^4.0.0:
   version "4.0.0"

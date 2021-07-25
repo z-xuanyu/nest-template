@@ -13,7 +13,7 @@ import { h } from 'vue';
 import { Switch } from 'ant-design-vue';
 import { changeAdminStatus } from '/@/api/system/account';
 import { useMessage } from '/@/hooks/web/useMessage';
-
+import dayjs from 'dayjs';
 export const columns: BasicColumn[] = [
   {
     title: '名称',
@@ -67,6 +67,9 @@ export const columns: BasicColumn[] = [
     title: '创建时间',
     dataIndex: 'createdAt',
     width: 180,
+    customRender: ({ record }) => {
+      return dayjs(record.createdAt).format('YYYY-MM-DD HH:mm')
+    }
   },
 ];
 
@@ -89,7 +92,7 @@ export const searchFormSchema: FormSchema[] = [
         { label: '停用', value: '2' },
       ],
     },
-    colProps: { span: 3 },
+    colProps: { span: 4 },
   },
 ];
 
@@ -105,12 +108,12 @@ export const formSchema: FormSchema[] = [
     field: 'email',
     label: '邮箱',
     component: 'Input',
-    required: true,
+    rules: [{ required: true },{ message:'请输入正确的邮箱', pattern:/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/ }],
   },
   {
     field: 'password',
     label: '密码',
-    component: 'Input',
+    component: 'InputPassword',
     required: true,
   },
   {

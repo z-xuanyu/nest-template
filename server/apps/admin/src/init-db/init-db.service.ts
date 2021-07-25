@@ -14,7 +14,6 @@ export class InitDbService implements OnModuleInit {
   ) {}
 
   onModuleInit() {
-    console.log('数据库初始化');
     this.init();
   }
 
@@ -23,7 +22,7 @@ export class InitDbService implements OnModuleInit {
    */
 
   private async init() {
-    
+    console.log('数据库初始化');
     /** 创建菜单 */
     // 父级菜单
     const menuInfo = {

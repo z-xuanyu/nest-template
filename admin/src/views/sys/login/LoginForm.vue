@@ -118,7 +118,7 @@
     },
     setup() {
       const { t } = useI18n();
-      const { notification, createErrorModal } = useMessage();
+      const { notification } = useMessage();
       const { prefixCls } = useDesign('login');
       const userStore = useUserStore();
 
@@ -161,12 +161,12 @@
             });
           }
         } catch (error) {
-          console.log('出错了');
-          createErrorModal({
-            title: t('sys.api.errorTip'),
-            content: error.message || t('sys.api.networkExceptionMsg'),
-            getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
-          });
+          console.log(error, '出错了');
+          // createErrorModal({
+          //   title: t('sys.api.errorTip'),
+          //   content: error.message || t('sys.api.networkExceptionMsg'),
+          //   getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
+          // });
         } finally {
           loading.value = false;
         }

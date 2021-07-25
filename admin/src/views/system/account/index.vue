@@ -14,7 +14,7 @@
         <a-button type="primary" @click="handleCreate"> 新增账号 </a-button>
       </template>
       <template #roleIds="{ record }">
-        <a-tag color="#2db7f5" v-for="item in record.roleIds" :key="item._id">{{
+        <a-tag color="#2db7f5" style="margin-right: 10px" v-for="item in record.roleIds" :key="item._id">{{
           item.name
         }}</a-tag>
       </template>
@@ -45,13 +45,15 @@
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import AccountModal from './AccountModal.vue';
   import { columns, searchFormSchema } from './account.data';
-  import { getAdminList } from '/@/api/system/account';
+  import { getAdminList, delAdmin } from '/@/api/system/account';
   import { useModal } from '/@/components/Modal';
+  import { useMessage } from '/@/hooks/web/useMessage';
   import { Tag } from 'ant-design-vue';
   export default defineComponent({
     name: 'Account',
     components: { BasicTable, AccountModal, TableAction, [Tag.name]: Tag },
     setup() {
+      const { createMessage } = useMessage();
       const [registerModal, { openModal }] = useModal();
 
       const [registerTable, { reload }] = useTable({
@@ -84,12 +86,6 @@
           isUpdate: true,
         });
       };
-
-      // 处理删除
-      const handleDelete = (record: Recordable) => {
-        console.log(record);
-      };
-
       // 添加
       const handleCreate = () => {
         openModal(true, {
@@ -99,6 +95,12 @@
 
       const handleSuccess = () => {
         reload();
+      };
+      // 处理删除
+      const handleDelete = async (record: Recordable) => {
+        await delAdmin(record._id)
+        handleSuccess()
+        createMessage.success("删除成功!")
       };
       return {
         handleEdit,

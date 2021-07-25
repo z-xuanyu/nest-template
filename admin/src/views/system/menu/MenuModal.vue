@@ -10,15 +10,7 @@
 <template>
   <BasicModal v-bind="$attrs" @register="registerModal" :title="getTitle" @ok="handleSubmit">
     <BasicForm @register="registerForm">
-      <template #roleIds="{ model, field }">
-        <a-checkbox-group class="w-full" v-model:value="model[field]">
-          <a-row>
-            <a-col :span="8" v-for="item in roleList" :key="item._id">
-              <a-checkbox :value="item._id">{{ item.name }}</a-checkbox>
-            </a-col>
-          </a-row>
-        </a-checkbox-group>
-      </template>
+      
     </BasicForm>
   </BasicModal>
 </template>
@@ -26,26 +18,22 @@
   import { defineComponent, ref, computed, unref, reactive, toRefs } from 'vue';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form/index';
-  import { formSchema } from './account.data';
-  import { getAdminRole } from '/@/api/system/role';
-  import { addAdmin, updateAdmin } from '/@/api/system/account';
-  import { CheckboxGroup, Row, Col, Checkbox } from 'ant-design-vue';
+  import { formSchema } from './menu.data';
+  import { getMenuTree, addMenu, updateMenu } from '/@/api/system/menu';
+  import { useMessage } from '/@/hooks/web/useMessage';
   export default defineComponent({
     name: 'AccountModal',
     components: {
       BasicModal,
       BasicForm,
-      [CheckboxGroup.name]: CheckboxGroup,
-      [Row.name]: Row,
-      [Col.name]: Col,
-      [Checkbox.name]: Checkbox,
     },
     emits: ['success', 'register'],
     setup(_, { emit }) {
       const state = reactive({
-        adminId: '',
-        roleList: [] as any,
+        menuId: '',
+        menuList: [] as any,
       });
+      const { createMessage } = useMessage();
       const isUpdate = ref(true);
       const [registerForm, { resetFields, setFieldsValue, updateSchema, validate }] = useForm({
         labelWidth: 80,
@@ -55,39 +43,34 @@
       const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
         resetFields();
         setModalProps({ confirmLoading: false });
+
         isUpdate.value = !!data?.isUpdate;
-        const roleListRes = await getAdminRole();
-        state.roleList = roleListRes;
         if (unref(isUpdate)) {
-          state.adminId = data.record._id;
+          state.menuId = data.record._id;
           setFieldsValue({
             ...data.record,
-            roleIds: data.record.roleIds.map((item: any) => item._id),
           });
         }
-        // 如果编辑不显示密码输入框
-          updateSchema({
-            field: 'password',
-            required: !unref(isUpdate),
-            show: !unref(isUpdate),
-          });
+
+        const menuTree = await getMenuTree();
+        updateSchema({
+          field: 'parentId',
+          componentProps: { treeData: menuTree},
+        });
       });
-      const getTitle = computed(() => (!unref(isUpdate) ? '新增账号' : '编辑账号'));
+      const getTitle = computed(() => (!unref(isUpdate) ? '新增菜单' : '编辑菜单'));
       async function handleSubmit() {
         try {
           const values = await validate();
           setModalProps({ confirmLoading: true });
           // 新增
           if (!unref(isUpdate)) {
-            await addAdmin(values);
+            await addMenu(values)
+            createMessage.success("添加成功!")
           } else {
             // 编辑
-            const data = {
-              name: values.name,
-              email: values.email,
-              roleIds: values.roleIds,
-            };
-            await updateAdmin(state.adminId, data);
+            await updateMenu(state.menuId,values)
+            createMessage.success("编辑成功!")
           }
           closeModal();
           emit('success');

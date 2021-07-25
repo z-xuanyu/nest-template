@@ -37,6 +37,7 @@
     "ant-design-vue": "2.2.0-rc.1",
     "axios": "^0.21.1",
     "crypto-js": "^4.0.0",
+    "dayjs": "^1.10.6",
     "echarts": "^5.1.2",
     "lodash-es": "^4.17.21",
     "mockjs": "^1.1.0",
@@ -122,6 +123,9 @@
     "vite-plugin-theme": "^0.8.1",
     "vue-eslint-parser": "^7.7.2",
     "vue-tsc": "^0.2.0"
+  },
+  "resolutions": {
+    "bin-wrapper": "npm:bin-wrapper-china"
   },
   "homepage": "https://github.com/z-xuanyu/nest-template",
   "engines": {

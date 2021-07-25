@@ -1,153 +1,114 @@
+<!--
+ * @Author: xuanyu
+ * @LastEditors: xuanyu
+ * @email: 969718197@qq.com
+ * @github: https://github.com/z-xuanyu
+ * @Date: 2021-07-19 12:10:57
+ * @LastEditTime: 2021-07-23 10:26:47
+ * @Description: Modify here please
+-->
 <template>
-  <div class="menu-picon">
-    <a-table rowKey="_id" :dataSource="data" :columns="columns" :row-selection="rowSelection" />
+  <div class="menu-page">
+    <BasicTable @register="registerTable">
+      <template #toolbar>
+        <a-button type="primary" @click="handleCreate"> 新增菜单 </a-button>
+      </template>
+      <template #action="{ record }">
+        <TableAction
+          :actions="[
+            {
+              icon: 'clarity:note-edit-line',
+              onClick: handleEdit.bind(null, record),
+            },
+            {
+              icon: 'ant-design:delete-outlined',
+              color: 'error',
+              popConfirm: {
+                title: '是否确认删除',
+                confirm: handleDelete.bind(null, record),
+              },
+            },
+          ]"
+        />
+      </template>
+    </BasicTable>
+    <MenuModal @register="registerModal" @success="handleSuccess"/>
   </div>
 </template>
-
 <script lang="ts">
-  import { createVNode, defineComponent, onMounted, reactive, ref, toRefs } from 'vue';
-  import { columns } from './columns';
-  import { DataItem } from './type';
-  import { addMenu, delMenu, getMenuList, updateMenu } from '/@/api/system/menu/index';
-  import { Modal, message, Table, TableColumn } from 'ant-design-vue';
-  import { QuestionCircleOutlined } from '@ant-design/icons-vue';
+  import { defineComponent } from 'vue';
+  import { BasicTable, useTable, TableAction } from '/@/components/Table';
+  import { columns, searchFormSchema } from './menu.data';
+  import { getMenuTree, delMenu } from '/@/api/system/menu';
+  import { useModal } from '/@/components/Modal';
+  import MenuModal from './MenuModal.vue'
+  import { useMessage } from '/@/hooks/web/useMessage';
   export default defineComponent({
-    name: 'Menu',
-    components: {
-      [Table.name]: Table,
-      [TableColumn.name]: TableColumn,
-    },
+    name: 'Account',
+    components: { BasicTable, TableAction, MenuModal },
     setup() {
-      // 列表转树
-      const list2tree = (items, parentId = null) => {
-        return items
-          .filter((item) => item.parentId == parentId)
-          .map((item) => {
-            if (list2tree(items, item._id).length) {
-              return {
-                ...item,
-                title: item.name,
-                children: list2tree(items, item._id),
-              };
-            } else {
-              return {
-                ...item,
-                title: item.name,
-              };
-            }
-          });
-      };
-      const formRef = ref<any>(null);
-      // 表格列表数据
-      const state = reactive({
-        addMenuVisible: false,
-        data: [],
-        menuForm: {
-          _id: 0,
-          name: '',
-          parentId: null,
-          url: '',
-          icon: '',
-          sort: 0,
-          keepAlive: 1,
+      const { createMessage } = useMessage();
+      const [registerModal, { openModal }] = useModal();
+
+      const [registerTable, { reload }] = useTable({
+        title: '账号列表',
+        api: getMenuTree,
+        columns,
+        formConfig: {
+          labelWidth: 120,
+          schemas: searchFormSchema,
         },
-        allMenuList: [] as any,
-        formRules: {
-          name: [
-            {
-              required: true,
-              message: '请输入菜单名称',
-            },
-          ],
-          url: [
-            {
-              required: true,
-              message: '请输入您的菜单路径',
-            },
-          ],
+        pagination: true,
+        striped: false,
+        useSearchForm: true,
+        showTableSetting: true,
+        bordered: true,
+        showIndexColumn: false,
+        canResize: false,
+        actionColumn: {
+          width: 80,
+          title: '操作',
+          dataIndex: 'action',
+          slots: { customRender: 'action' },
+          fixed: undefined,
         },
       });
-      // 获取列表数据
-      const getMenus = async () => {
-        const menuRes: any = await getMenuList();
-        state.allMenuList = menuRes as any;
-        state.data = list2tree(menuRes);
-      };
-      onMounted(() => getMenus());
-      // 添加菜单弹出层
-      const handleAddMenu = () => {
-        state.addMenuVisible = true;
-      };
-      // 编辑菜单弹出层
-      const handleEditMenu = (item) => {
-        state.menuForm = JSON.parse(JSON.stringify(item));
-        state.addMenuVisible = true;
-      };
-      // 添加或者编辑提交
-      const onSubmit = () => {
-        formRef.value
-          .validate()
-          .then(async () => {
-            if ((state.menuForm as any)._id) {
-              // 编辑菜单
-              updateMenu((state.menuForm as any)._id, state.menuForm);
-            } else {
-              // 新增菜单
-              await addMenu(state.menuForm);
-            }
-            // 添加成功重置表单
-            formRef.value.resetFields();
-            getMenus();
-            state.addMenuVisible = false;
-          })
-          .catch(() => {});
-      };
-      // 删除菜单
-      const handleDelMenu = (record: DataItem) => {
-        if (record.children?.length) {
-          return message.warning('该分类含有子分类，不能删除！');
-        }
-        Modal.confirm({
-          title: '提示',
-          icon: createVNode(QuestionCircleOutlined),
-          content: '您确定要删除该菜单吗？',
-          onOk: async () => {
-            await delMenu(record._id as string);
-            getMenus();
-            message.success('删除成功');
-          },
+      // 编辑
+      const handleEdit = (record: Recordable) => {
+        openModal(true, {
+          record,
+          isUpdate: true,
         });
       };
-      // 表格的列选中或者全选
-      const rowSelection = {
-        onChange: (selectedRow_ids: (string | number)[], selectedRows: DataItem[]) => {
-          console.log(`selectedRow_ids: ${selectedRow_ids}`, 'selectedRows: ', selectedRows);
-        },
-        onSelect: (record: DataItem, selected: boolean, selectedRows: DataItem[]) => {
-          console.log(record, selected, selectedRows);
-        },
-        onSelectAll: (selected: boolean, selectedRows: DataItem[], changeRows: DataItem[]) => {
-          console.log(selected, selectedRows, changeRows);
-        },
+      // 添加
+      const handleCreate = () => {
+        openModal(true, {
+          isUpdate: false,
+        });
+      };
+
+      const handleSuccess = () => {
+        reload();
+      };
+      // 处理删除
+      const handleDelete = async (record: Recordable) => {
+        await delMenu(record._id)
+        reload();
+        createMessage.success("删除成功!")
       };
       return {
-        ...toRefs(state),
-        columns,
-        rowSelection,
-        handleDelMenu,
-        handleAddMenu,
-        handleEditMenu,
-        onSubmit,
-        formLabelCol: { span: 4 },
-        formWrapperCol: { span: 20 },
-        formRef,
+        handleEdit,
+        handleDelete,
+        registerModal,
+        handleSuccess,
+        handleCreate,
+        registerTable,
       };
     },
   });
 </script>
-
 <style lang="less" scoped>
-  .menu-picon {
+  .account-page {
     padding: 20px;
   }
 </style>

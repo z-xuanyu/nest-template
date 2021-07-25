@@ -13,11 +13,20 @@ import { defHttp } from '/@/utils/http/axios';
 enum Api {
   MenuList = '/menu/list',
   Menu = '/menu',
+  Tree = '/menu/tree'
 }
 
 //  获取菜单列表
 export function getMenuList() {
   return defHttp.get<MenuItem>({ url: Api.MenuList });
+}
+
+
+// 获取菜单树结构
+export function getMenuTree(){
+  return defHttp.get({
+    url: Api.Tree
+  })
 }
 
 //  添加菜单

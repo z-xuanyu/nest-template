@@ -60,7 +60,7 @@ export class MenuService {
   async getMenuList() {
     return await this.menuModel.find();
   }
-
+  
   /**
    * 添加菜单
    */
