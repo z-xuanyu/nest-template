@@ -5,6 +5,7 @@
   "root": "apps/server",
   "compilerOptions": {
     "webpack": true,
+    "assets": ["**/*.pug"],
     "tsConfigPath": "apps/server/tsconfig.app.json"
   },
   "projects": {

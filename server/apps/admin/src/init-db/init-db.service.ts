@@ -22,7 +22,6 @@ export class InitDbService implements OnModuleInit {
    */
 
   private async init() {
-    console.log('数据库初始化');
     /** 创建菜单 */
     // 父级菜单
     const menuInfo = {
@@ -37,6 +36,7 @@ export class InitDbService implements OnModuleInit {
     const menuRes = await this.menuModel.find();
     // 如果没有菜单数据，才执行初始化数据库
     if (!menuRes.length) {
+      console.log('数据库初始化');
       const menu1 = await this.menuModel.create(menuInfo as any);
 
       // 子级菜单
