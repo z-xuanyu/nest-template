@@ -8,6 +8,7 @@ import {
   Post,
   Put,
   Query,
+  UploadedFile,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -22,15 +23,15 @@ import { addAdminDto } from './Dto/addAdminDto';
 import { editAdminDto } from './Dto/editAdminDto';
 import { AdministratorService } from './administrator.service';
 import { changeAdminStatusDto } from './Dto/changeAdminStatusDto';
-
-
+import { UseInterceptors } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('Admin')
 @ApiTags('Admin管理')
 @UseGuards(AuthGuard('jwt-admin'))
 @ApiBearerAuth()
 export class AdministratorController {
-  constructor(private adminService: AdministratorService) {}
+  constructor(private adminService: AdministratorService) { }
 
   /**
    * 获取管理员列表
@@ -103,16 +104,25 @@ export class AdministratorController {
   @Put('/changeStatus')
   @ApiOperation({ summary: '改变管理员状态' })
   async changeAdminStatus(@Body() adminForm: changeAdminStatusDto) {
-    console.log(adminForm, 5454);
     const result = await this.adminService.changeAdminStatus(
       adminForm.adminId,
       adminForm.status,
     );
-
     return {
       code: 1,
       message: '请求成功',
       result,
     };
+  }
+
+  /**
+   * 上传头像
+   */
+  @Post('avatarUpload')
+  @ApiOperation({ summary: '头像上传' })
+  @UseInterceptors(FileInterceptor('file'))
+  async avatarUpload(@UploadedFile() file: Express.Multer.File) {
+    console.log(file)
+    return 'ok';
   }
 }

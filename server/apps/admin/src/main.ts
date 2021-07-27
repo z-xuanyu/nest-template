@@ -4,7 +4,7 @@
  * @email: 969718197@qq.com
  * @github: https://github.com/z-xuanyu
  * @Date: 2021-07-16 10:14:38
- * @LastEditTime: 2021-07-16 11:00:22
+ * @LastEditTime: 2021-07-27 15:27:56
  * @Description: Modify here please
  */
 import 'dotenv/config';
@@ -16,7 +16,7 @@ import * as helmet from 'helmet';
 const PORT = process.env.ADMIN_PORT || 8888;
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
+  app.enableCors();
   const options = new DocumentBuilder()
     .setTitle('管理端API接口文档')
     .setDescription('这是一个管理端API接口文档')
