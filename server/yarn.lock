@@ -1036,6 +1036,11 @@
   dependencies:
     source-map "^0.6.1"
 
+"@types/validator@^13.1.3":
+  version "13.6.3"
+  resolved "https://r.cnpmjs.org/@types/validator/download/@types/validator-13.6.3.tgz#31ca2e997bf13a0fffca30a25747d5b9f7dbb7de"
+  integrity sha1-McoumXvxOg//yjCiV0fVuffbt94=
+
 "@types/webpack-sources@*":
   version "1.4.2"
   resolved "https://r.cnpmjs.org/@types/webpack-sources/download/@types/webpack-sources-1.4.2.tgz#5d3d4dea04008a779a90135ff96fb5c0c9e6292c"
@@ -2192,6 +2197,15 @@ class-utils@^0.3.5:
     define-property "^0.2.5"
     isobject "^3.0.0"
     static-extend "^0.1.1"
+
+class-validator@^0.13.1:
+  version "0.13.1"
+  resolved "https://r.cnpmjs.org/class-validator/download/class-validator-0.13.1.tgz#381b2001ee6b9e05afd133671fbdf760da7dec67"
+  integrity sha1-OBsgAe5rngWv0TNnH733YNp97Gc=
+  dependencies:
+    "@types/validator" "^13.1.3"
+    libphonenumber-js "^1.9.7"
+    validator "^13.5.2"
 
 cli-color@2.0.0:
   version "2.0.0"
@@ -5355,6 +5369,11 @@ libmime@5.0.0:
     iconv-lite "0.6.2"
     libbase64 "1.2.1"
     libqp "1.1.0"
+
+libphonenumber-js@^1.9.7:
+  version "1.9.22"
+  resolved "https://r.cnpmjs.org/libphonenumber-js/download/libphonenumber-js-1.9.22.tgz#b6b460603dedbd58f2d71f15500f216d70850fad"
+  integrity sha1-trRgYD3tvVjy1x8VUA8hbXCFD60=
 
 libqp@1.1.0:
   version "1.1.0"
@@ -8679,6 +8698,11 @@ validate-npm-package-license@^3.0.1:
   dependencies:
     spdx-correct "^3.0.0"
     spdx-expression-parse "^3.0.0"
+
+validator@^13.5.2:
+  version "13.6.0"
+  resolved "https://r.cnpmjs.org/validator/download/validator-13.6.0.tgz#1e71899c14cdc7b2068463cb24c1cc16f6ec7059"
+  integrity sha1-HnGJnBTNx7IGhGPLJMHMFvbscFk=
 
 vary@^1, vary@~1.1.2:
   version "1.1.2"

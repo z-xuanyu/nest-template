@@ -33,6 +33,7 @@
     "@typegoose/typegoose": "^7.3.2",
     "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
+    "class-validator": "^0.13.1",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-rate-limit": "^5.3.0",
