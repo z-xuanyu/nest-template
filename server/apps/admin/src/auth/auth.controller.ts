@@ -43,7 +43,8 @@ export class AuthController {
   @ApiOperation({ summary: 'Admin登录' })
   @UseGuards(AuthGuard('local-admin'))
   async adminLogin(@Body() loginDto: loginDto, @Req() req) {
-    const token = this.jwtService.sign(String(req.user._id));
+    const payload = { id: String(req.user._id) };
+    const token = this.jwtService.sign(payload);
     return {
       code: 1,
       result: { 

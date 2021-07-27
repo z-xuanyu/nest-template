@@ -20,6 +20,7 @@ import MAO = require('multer-aliyun-oss');
       useFactory() {
         return {
           secret: process.env.JWT_SECRET,
+          signOptions: { expiresIn: process.env.JWT_EXPIRESIN }
         };
       },
     }),
