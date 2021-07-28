@@ -16,6 +16,9 @@ import {
   ApiOperation,
   ApiBearerAuth,
   ApiParam,
+  ApiProperty,
+  ApiConsumes,
+  ApiBody,
 } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { getAdminDto } from './Dto/getAdminListDto';
@@ -26,10 +29,16 @@ import { changeAdminStatusDto } from './Dto/changeAdminStatusDto';
 import { UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 
+class FileUploadDto {
+  @ApiProperty({ type: 'string', format: 'binary' })
+  file: any;
+}
+
+
 @Controller('Admin')
 @ApiTags('Admin管理')
-@UseGuards(AuthGuard('jwt-admin'))
-@ApiBearerAuth()
+// @UseGuards(AuthGuard('jwt-admin'))
+// @ApiBearerAuth()
 export class AdministratorController {
   constructor(private adminService: AdministratorService) { }
 
@@ -121,8 +130,12 @@ export class AdministratorController {
   @Post('avatarUpload')
   @ApiOperation({ summary: '头像上传' })
   @UseInterceptors(FileInterceptor('file'))
-  async avatarUpload(@UploadedFile() file: Express.Multer.File) {
-    console.log(file)
-    return 'ok';
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: '头像上传',
+    type: FileUploadDto,
+  })
+  async avatarUpload(@UploadedFile() file: any) {
+    return file;
   }
 }
