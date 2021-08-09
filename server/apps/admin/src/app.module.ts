@@ -4,7 +4,7 @@
  * @email: 969718197@qq.com
  * @github: https://github.com/z-xuanyu
  * @Date: 2021-07-16 10:14:38
- * @LastEditTime: 2021-07-28 14:27:48
+ * @LastEditTime: 2021-08-09 14:17:44
  * @Description: Modify here please
  */
 import { Module } from '@nestjs/common';
@@ -18,7 +18,6 @@ import { MenuModule } from './menu/menu.module';
 import { InitDbModule } from './init-db/init-db.module';
 import { SendEmailModule } from './send-email/send-email.module';
 import { TasksModule } from './tasks/tasks.module';
-import { UserController } from './user/user.controller';
 import { UserModule } from './user/user.module';
 
 @Module({
@@ -33,7 +32,7 @@ import { UserModule } from './user/user.module';
     TasksModule,
     UserModule
   ],
-  controllers: [AppController, UserController],
+  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule { }

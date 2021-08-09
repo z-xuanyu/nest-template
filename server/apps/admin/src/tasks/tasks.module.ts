@@ -10,9 +10,11 @@
 import { Module } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { ScheduleModule } from '@nestjs/schedule';
+import { TasksController } from './tasks.controller';
 
 @Module({
   imports:[ScheduleModule.forRoot()],
-  providers: [TasksService]
+  providers: [TasksService],
+  controllers: [TasksController]
 })
 export class TasksModule {}

@@ -4,13 +4,14 @@
  * @email: 969718197@qq.com
  * @github: https://github.com/z-xuanyu
  * @Date: 2021-07-16 10:14:38
- * @LastEditTime: 2021-07-23 17:50:47
+ * @LastEditTime: 2021-08-09 11:07:01
  * @Description: Modify here please
  */
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ReturnModelType } from '@typegoose/typegoose';
 import { Admin } from 'libs/db/models/admin.model';
 import { InjectModel } from 'nestjs-typegoose';
+import { TableResponseResult } from '../BaseResponseResult';
 import { addAdminDto } from './Dto/addAdminDto';
 import { editAdminDto } from './Dto/editAdminDto';
 import { getAdminDto } from './Dto/getAdminListDto';
@@ -22,19 +23,23 @@ export class AdministratorService {
   ) {}
 
   // 管理员列表
-  async getAdminList(getAdminQuery: getAdminDto) {
-    const { pageNumber, pageSize } = getAdminQuery;
+  async getAdminList(getAdminQuery: getAdminDto):Promise<TableResponseResult<Admin>>{
+    const { pageNumber, pageSize, name } = getAdminQuery;
+    const total = await this.adminModel.countDocuments();
     const info = await this.adminModel
-      .find()
-      .limit(Number(pageSize || 10))
+      .find({ name: { $regex: new RegExp(name, 'i') } })
+      .limit(~~(pageSize || 10))
       .populate('roleIds')
-      .skip(Number((pageNumber - 1) * pageSize))
+      .skip(~~((pageNumber - 1) * pageSize))
       .exec();
-    return info;
+      return {
+          items: info,
+          total,
+      }
   }
 
   // 创建管理员
-  async createAdmin(addAdminForm: addAdminDto) {
+  async createAdmin(addAdminForm: addAdminDto):Promise<Admin> {
     const isHasEmail = await this.adminModel.findOne({
       email: addAdminForm.email,
     });
@@ -53,7 +58,7 @@ export class AdministratorService {
    * 更新管理员信息
    */
 
-  async updateAdmin(editAdminForm: editAdminDto, id: string) {
+  async updateAdmin(editAdminForm: editAdminDto, id: string): Promise<Admin> {
     const isHasEmail = await this.adminModel.findOne({
       email: editAdminForm.email,
     });
@@ -77,7 +82,7 @@ export class AdministratorService {
    * 删除管理员
    */
 
-  async deleteAdmin(id: string) {
+  async deleteAdmin(id: string):Promise<any>{
     // 检查是否为超级管理员
     const isSuper = await this.adminModel.findOne({ _id: id, isSuper: true });
     if (isSuper) {
@@ -92,7 +97,7 @@ export class AdministratorService {
   }
 
   // 改变管理员状态
-  async changeAdminStatus(id: string, status: boolean) {
+  async changeAdminStatus(id: string, status: boolean):Promise<Admin> {
     const isSuper = await this.adminModel.findOne({ _id: id, isSuper: true });
     if (isSuper) {
       throw new HttpException('不能禁用高权重账号', HttpStatus.OK);
